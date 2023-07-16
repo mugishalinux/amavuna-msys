@@ -35,14 +35,7 @@ export class RegisterDto {
   @IsNotEmpty()
   @ApiProperty({ description: "provide profile picture" })
   profilePicture: string;
-
   @IsNotEmpty()
-  @ApiProperty({ description: "please provide province id" })
-  province: number;
-  @IsNotEmpty()
-  @ApiProperty({ description: "please provide district id" })
-  district: number;
-  @IsNotEmpty()
-  @ApiProperty({ description: "please provide sector id" })
-  sector: number;
+  @ApiProperty({ description: "provide church id" })
+  church: number;
 }

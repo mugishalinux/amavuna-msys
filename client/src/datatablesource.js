@@ -312,7 +312,7 @@ export const appointColumns = [
   },
 ];
 
-export const categoryColumns = [
+export const churchColumns = [
   {
     field: "id",
     headerName: "ID",
@@ -322,16 +322,16 @@ export const categoryColumns = [
     },
   },
   {
-    field: "Category Name",
-    headerName: "Category Name",
+    field: "Church Name",
+    headerName: "Church Name",
     width: 200,
     renderCell: (params) => {
-      return <div className="cellWithImg">{params.row.cateogryName}</div>;
+      return <div className="cellWithImg">{params.row.churchName}</div>;
     },
   },
 ];
 
-export const victimColumns = [
+export const christianColumns = [
   {
     field: "id",
     headerName: "ID",
@@ -382,17 +382,35 @@ export const victimColumns = [
       return <div className="cellWithImg">{reformattedPhone}</div>;
     },
   },
-  {
-    field: "Category Name",
-    headerName: "Category Name",
-    width: 130,
-    renderCell: (params) => {
-      const category = params.row.category || {}; // Use an empty object as fallback
-      const categoryName = category.cateogryName || "-";
+  // {
+  //   field: "Baptism Status",
+  //   headerName: "Baptism Status",
+  //   width: 130,
+  //   renderCell: (params) => {
+  //     const status = '';
+  //     if(params.row.isBaptised){
+  //       status = "allow baptised"
+  //     }else{
+  //       status = "not allow baptised"
+  //     }
+  //     const category = params.row.category || {}; // Use an empty object as fallback
+  //     const categoryName = category.cateogryName || "-";
 
-      return <div className="cellWithImg">{categoryName}</div>;
-    },
-  },
+  //     return <div className="cellWithImg">{categoryName}</div>;
+  //   },
+  // },
+
+  // {
+  //   field: "Baptism Status",
+  //   headerName: "Baptism Status",
+  //   width: 130,
+  //   renderCell: (params) => {
+  //     const category = params.row.category || {}; // Use an empty object as fallback
+  //     const categoryName = category.cateogryName || "-";
+
+  //     return <div className="cellWithImg">{categoryName}</div>;
+  //   },
+  // },
 ];
 
 export const tripColumns = [

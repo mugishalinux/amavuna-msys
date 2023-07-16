@@ -21,9 +21,13 @@ const Home = () => {
   const [totalAmount, setTotalAmount] = useState(0);
   const [totalBookings, setTotalBookings] = useState(0);
   const [totalBoats, setTotalBoats] = useState(0);
-  const [todayIncomes, setTodayIncomes] = useState(0);
+  const [todayChristiansRegistered, setTodayChristiansRegistered] = useState(0);
   const [todayIncomesPer, setTodayIncomesPer] = useState(0);
   const [datas, setDatas] = useState([]);
+  const [users, setUsers] = useState([]);
+  const [christians, setChristians] = useState([]);
+  const [churches, setChurches] = useState([]);
+
   useEffect(() => {
     const fetchUserInformation = async () => {
       try {
@@ -33,77 +37,51 @@ const Home = () => {
         // Set the user object in component state
         setUser(userInformation);
 
-        // Fetch total amount
-        const amountResponse = await axios.get(
-          `${BASE_URL}/paymentReports/calculate`,
-          {
-            headers: {
-              Authorization: `Bearer ${auth().jwtToken}`,
-            },
-          }
-        );
-        //total_amount":null
-        setTotalAmount(amountResponse.data);
-
-        // Fetch total bookings
-        const bookingsResponse = await axios.get(
-          `${BASE_URL}/bookingReports/count`,
-          {
-            headers: {
-              Authorization: `Bearer ${auth().jwtToken}`,
-            },
-          }
-        );
-        setTotalBookings(bookingsResponse.data);
-
-        // Fetch total boats
-        const boatsResponse = await axios.get(`${BASE_URL}/boatReports/count`, {
+        //fetch total users
+        const totalUsers = await axios.get(`${BASE_URL}/user`, {
           headers: {
             Authorization: `Bearer ${auth().jwtToken}`,
           },
         });
-        setTotalBoats(boatsResponse.data);
+        setUsers(totalUsers.data);
 
-        const todaysTotalIncomeResponse = await axios.get(
-          `${BASE_URL}/paymentReports/calculateTodayIncome`,
+        //fetch christians users
+        const totalChristian = await axios.get(`${BASE_URL}/christian`, {
+          headers: {
+            Authorization: `Bearer ${auth().jwtToken}`,
+          },
+        });
+        setChristians(totalChristian.data);
+
+        //fetch christians users
+        const totalChurches = await axios.get(`${BASE_URL}/church`, {
+          headers: {
+            Authorization: `Bearer ${auth().jwtToken}`,
+          },
+        });
+        setChurches(totalChurches.data);
+
+        //fetch christians created in last 6 months
+        const totalChristianInPastSixMonths = await axios.get(
+          `${BASE_URL}/report`,
           {
             headers: {
               Authorization: `Bearer ${auth().jwtToken}`,
             },
           }
         );
-        setTodayIncomes(todaysTotalIncomeResponse.data);
+        setDatas(totalChristianInPastSixMonths.data);
 
-        const todaysTotalIncomePercentategResponse = await axios.get(
-          `${BASE_URL}/paymentReports/calculateTodayPercentage`,
+        //fetch christians created in last 6 months
+        const totalTodayChristianRegistered = await axios.get(
+          `${BASE_URL}/report/christian/registered/today`,
           {
             headers: {
               Authorization: `Bearer ${auth().jwtToken}`,
             },
           }
         );
-        setTodayIncomesPer(todaysTotalIncomePercentategResponse.data);
-
-        // const sixMonthReportResponse = await axios.get(
-        //   `${BASE_URL}/paymentReports/sixMonthsAgo`,
-        //   {
-        //     headers: {
-        //       Authorization: `Bearer ${auth().jwtToken}`,
-        //     },
-        //   }
-        // );
-        // setDatas(sixMonthReportResponse.data);
-
-        const response = await axios.get(
-          `${BASE_URL}/paymentReports/sixMonthsAgo`,
-          {
-            headers: {
-              Authorization: `Bearer ${auth().jwtToken}`,
-            },
-          }
-        );
-
-        setDatas(response.data);
+        setTodayChristiansRegistered(totalTodayChristianRegistered.data);
 
         setIsLoading(false);
       } catch (error) {
@@ -124,27 +102,28 @@ const Home = () => {
       <div className="homeContainer">
         <Navbar imageUrl={user.profile} style={{ marginBottom: "50px" }} />
 
-
-
-
-
-
         <div className="widgets">
-          {/* <Widget type="booking" amount={totalBookings} /> */}
-          <Widget type="booking" amount={400} />
-          {/* <Widget type="payments" amount={totalAmount[0].total_amount} /> */}
-          <Widget type="payments" amount={3000} />
-          {/* <Widget type="boats" amount={totalBoats} /> */}
-          <Widget type="boats" amount={90} />
+          <Widget type="Users" amount={users.length} />
+
+          <Widget type="Christians" amount={christians.length} />
+
+          <Widget type="Churches" amount={churches.length} />
         </div>
         <div className="charts">
           {/* <Featured todayIncome={todayIncomes} percentage={todayIncomesPer} /> */}
-          <Featured todayIncome={todayIncomes} percentage={300} />
-          {/* <Chart title="Last 6 Months (Revenue)" aspect={2 / 1} data={datas} /> */}
-          <Chart title="Last 6 Months (Revenue)" aspect={2 / 1} data={datas} />
+          <Featured
+            todayIncome={
+              todayChristiansRegistered[0].total_records_created_today
+            }
+            percentage={300}
+          />
+
+          <Chart
+            title="Last 6 Months (Christians added)"
+            aspect={2 / 1}
+            data={datas}
+          />
         </div>
-
-
       </div>
     </div>
   );

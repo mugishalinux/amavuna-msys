@@ -1,4 +1,3 @@
-import { Victim } from "../../victim/entity/victim.entity";
 import {
   BaseEntity,
   BeforeInsert,
@@ -29,6 +28,4 @@ export class Category extends BaseEntity {
   created_at: Date;
   @UpdateDateColumn()
   updated_at: Date;
-  @OneToMany(() => Victim, (victim) => victim.category)
-  victim: Victim[];
 }

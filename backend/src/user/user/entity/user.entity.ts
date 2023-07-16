@@ -16,10 +16,9 @@ import { ApiProperty } from "@nestjs/swagger";
 import { Exclude } from "class-transformer";
 import { Role } from "../enums/role";
 import { Certificate } from "../../../certificates/entity/certificate.entity";
-import { Victim } from "../../../victim/entity/victim.entity";
-import { District } from "./district.entity";
-import { Province } from "./province.entity";
-import { Sector } from "./sector.entity";
+import { Church } from "../../../church/church.entity";
+import { Christian } from "../../../christian/entity/christian.entity";
+import { Post } from "../../../post/post.entity";
 
 @Entity("users")
 export class User extends BaseEntity {
@@ -50,12 +49,10 @@ export class User extends BaseEntity {
   created_at: Date;
   @UpdateDateColumn()
   updated_at: Date;
-  @OneToMany(() => Victim, (victim) => victim.user)
-  victim: Victim[];
-  @ManyToOne(() => District, (district) => district.user, { nullable: true })
-  district: District;
-  @ManyToOne(() => Province, (province) => province.user, { nullable: true })
-  province: Province;
-  @ManyToOne(() => Sector, (sector) => sector.user, { nullable: true })
-  sector: Sector;
+  @OneToMany(() => Christian, (christian) => christian.user)
+  christian: Christian[];
+  @OneToMany(() => Post, (post) => post.user)
+  post: Post[];
+  @ManyToOne(() => Church, (church) => church.user)
+  church: Church;
 }

@@ -9,6 +9,8 @@ import { useSignOut } from "react-auth-kit";
 import { useContext } from "react";
 import CategoryIcon from "@mui/icons-material/Category";
 import GirlIcon from "@mui/icons-material/Girl";
+import ChurchIcon from "@mui/icons-material/Church";
+
 const AdminSidebar = () => {
   const signOut = useSignOut();
   const { dispatch } = useContext(DarkModeContext);
@@ -26,7 +28,7 @@ const AdminSidebar = () => {
       <div className="center">
         <ul>
           <p className="title">MAIN</p>
-          <Link to="" style={{ textDecoration: "none" }}>
+          <Link to="/home" style={{ textDecoration: "none" }}>
             <li>
               <DashboardIcon className="icon" />
               <span>Dashboard</span>
@@ -37,21 +39,21 @@ const AdminSidebar = () => {
           <Link to="/user" style={{ textDecoration: "none" }}>
             <li>
               <PersonOutlineIcon className="icon" />
-              <span>User</span>
+              <span>Users</span>
             </li>
           </Link>
 
-          <Link to="/categories" style={{ textDecoration: "none" }}>
+          <Link to="/church" style={{ textDecoration: "none" }}>
             <li>
-              <CategoryIcon className="icon" />
-              <span>Categories</span>
+              <ChurchIcon className="icon" />
+              <span>Churches</span>
             </li>
           </Link>
 
-          <Link to="/victims" style={{ textDecoration: "none" }}>
+          <Link to="/christian" style={{ textDecoration: "none" }}>
             <li>
               <GirlIcon className="icon" />
-              <span>Victims</span>
+              <span>Christian</span>
             </li>
           </Link>
 

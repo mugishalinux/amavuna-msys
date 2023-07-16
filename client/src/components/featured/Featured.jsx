@@ -8,10 +8,10 @@ import KeyboardArrowUpOutlinedIcon from "@mui/icons-material/KeyboardArrowUpOutl
 const Featured = ({ todayIncome, percentage }) => {
   return (
     <div className="featured">
-      <div className="top">
-        <h1 className="title">Total Revenue</h1>
+      {/* <div className="top">
+        <h1 className="title">Total Christians Registered Today</h1>
         <MoreVertIcon fontSize="small" />
-      </div>
+      </div> */}
       <div className="bottom">
         {/* <div className="featuredChart">
           <CircularProgressbar
@@ -20,13 +20,14 @@ const Featured = ({ todayIncome, percentage }) => {
             strokeWidth={6}
           />
         </div> */}
-        <p style={{marginTop:"50px"}} className="title">Total sales made today</p>
+        <p style={{ marginTop: "50px" }} className="title">
+          Total Christians Registered Today
+        </p>
         <p style={{ color: "red" }} className="amount">
-          <span style={{color:"black", marginRight:"5px"}}>$</span>{todayIncome}
+          <span style={{ color: "black", marginRight: "5px" }}></span>
+          {todayIncome}
         </p>
-        <p className="desc">
-          Previous transactions processing. Last payments may not be included.
-        </p>
+        <p className="desc">Last record may not be included.</p>
         {/* <div className="summary">
           <div className="item">
             <div className="itemTitle">Target</div>

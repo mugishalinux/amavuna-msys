@@ -1,4 +1,4 @@
-import { Victim } from "../../victim/entity/victim.entity";
+import { Christian } from "../../christian/entity/christian.entity";
 import {
   BaseEntity,
   BeforeInsert,
@@ -18,9 +18,9 @@ export class Certificate extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @OneToOne(() => Victim)
+  @OneToOne(() => Christian)
   @JoinColumn()
-  victim: Victim;
+  victim: Christian;
 
   @Column()
   isAllowed: boolean;

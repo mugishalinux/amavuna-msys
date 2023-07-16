@@ -6,6 +6,8 @@ import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import MonetizationOnOutlinedIcon from "@mui/icons-material/MonetizationOnOutlined";
 import { Link } from "react-router-dom";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
+import ChurchIcon from "@mui/icons-material/Church";
+import GirlIcon from "@mui/icons-material/Girl";
 
 const Widget = ({ type, amount }) => {
   let data;
@@ -21,7 +23,7 @@ const Widget = ({ type, amount }) => {
         link: "See all users",
         path: "/payment",
         icon: (
-          <PersonOutlinedIcon
+          <PersonOutlineIcon
             className="icon"
             style={{
               color: "crimson",
@@ -31,14 +33,14 @@ const Widget = ({ type, amount }) => {
         ),
       };
       break;
-    case "booking":
+    case "Users":
       data = {
-        title: "Bookings",
+        title: "Users",
         isMoney: false,
-        link: "View all bookings",
-        path: "/bookings",
+        link: "View all users",
+        path: "/user",
         icon: (
-          <ShoppingCartOutlinedIcon
+          <PersonOutlineIcon
             className="icon"
             style={{
               backgroundColor: "rgba(218, 165, 32, 0.2)",
@@ -48,28 +50,28 @@ const Widget = ({ type, amount }) => {
         ),
       };
       break;
-    case "payments":
+    case "Christians":
       data = {
-        title: "Payments",
-        isMoney: true,
-        link: "View all payments",
-        path: "/payment",
+        title: "Christians",
+        isMoney: false,
+        link: "View all christians",
+        path: "/christian",
         icon: (
-          <MonetizationOnOutlinedIcon
+          <GirlIcon
             className="icon"
             style={{ backgroundColor: "rgba(0, 128, 0, 0.2)", color: "green" }}
           />
         ),
       };
       break;
-    case "boats":
+    case "Churches":
       data = {
-        title: "Ships",
+        title: "Churches",
         isMoney: false,
-        link: "See details",
-        path: "/boat",
+        link: "view all churches",
+        path: "/church",
         icon: (
-          <AccountBalanceWalletOutlinedIcon
+          <ChurchIcon
             className="icon"
             style={{
               backgroundColor: "rgba(128, 0, 128, 0.2)",
@@ -97,7 +99,6 @@ const Widget = ({ type, amount }) => {
       <div className="right">
         <div className="percentage positive">
           <KeyboardArrowUpIcon />
-          {diff} %
         </div>
         {data.icon}
       </div>

@@ -14,6 +14,7 @@ import {
   HttpException,
   HttpStatus,
   ConsoleLogger,
+  ForbiddenException,
 } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 import { LoginDto } from "./dto/login.dto";
@@ -48,8 +49,8 @@ export class UserController {
 
   @Post("createMentor")
   @ApiBearerAuth()
-  async createMentor(@Body() userDto: RegisterDto) {
-    userDto.access_level = "mentor";
+  async createChurchElder(@Body() userDto: RegisterDto) {
+    userDto.access_level = "churchelder";
     return this.userService.createUsers(userDto);
   }
   @Post("createAdmin")
@@ -75,7 +76,19 @@ export class UserController {
   @UseGuards(JwtAuthGuard)
   @Put("activateMentorAccount/:id")
   @ApiBearerAuth()
-  async activateSkipperAccount(@Param("id") id: number) {
+  async activateChurchElder(@Request() req, @Param("id") id: number) {
+    const user = await User.findOne({
+      where: { id: req.user.userId },
+    });
+
+    try {
+      if (user.access_level == "churchelder") {
+        console.log(user);
+        throw new ForbiddenException("You are not allowed activate account");
+      }
+    } catch (e) {
+      console.log(e);
+    }
     return this.userService.approveSkipperAccount(id);
   }
   @ApiBearerAuth()
@@ -83,7 +96,14 @@ export class UserController {
   @UseGuards(JwtAuthGuard)
   @Put("disableMentorAccount/:id")
   @ApiBearerAuth()
-  async disableSkipperAccount(@Param("id") id: number) {
+  async disableChurchElder(@Request() req, @Param("id") id: number) {
+    const user = await User.findOne({
+      where: { id: req.user.userId },
+    });
+    if (user.access_level == "churchelder") {
+      console.log(user);
+      throw new ForbiddenException("You are not allowed activate account");
+    }
     return this.userService.disableSkipperAccount(id);
   }
 
@@ -99,57 +119,9 @@ export class UserController {
   @ApiBearerAuth()
   @HasRoles("admin")
   @UseGuards(JwtAuthGuard)
-  @ApiQuery({ required: false, name: "pageNumber" })
-  @ApiQuery({ required: false, name: "pageSize" })
-  @ApiQuery({ required: false, name: "email" })
-  @ApiQuery({ required: false, name: "search" })
   @Get("/getAllMentor")
-  async getAllSkipper(
-    @Request() req,
-    @Query("pageNumber") pageNumber: number,
-    @Query("email") email: string,
-    @Query("pageSize") pageSize: number,
-  ) {
-    // Returned filters can be passed to a Typeorm entity as House.find({where: filter})
-    const user = await this.filter.paginate(
-      User,
-      pageSize || 10,
-      pageNumber || 1,
-      {
-        // ...filter,
-        status: Not(8),
-        access_level: Not("admin"),
-      },
-    );
-    return user;
-  }
-
-  @ApiBearerAuth()
-  @HasRoles("admin")
-  @UseGuards(JwtAuthGuard)
-  @ApiQuery({ required: false, name: "pageNumber" })
-  @ApiQuery({ required: false, name: "pageSize" })
-  @ApiQuery({ required: false, name: "email" })
-  @ApiQuery({ required: false, name: "search" })
-  @Get("/getAllAdmins")
-  async getAllAdmins(
-    @Request() req,
-    @Query("pageNumber") pageNumber: number,
-    @Query("email") email: string,
-    @Query("pageSize") pageSize: number,
-  ) {
-    // Returned filters can be passed to a Typeorm entity as House.find({where: filter})
-    const user = await this.filter.paginate(
-      User,
-      pageSize || 10,
-      pageNumber || 1,
-      {
-        // ...filter,
-        status: Not(8),
-        access_level: Not("mentor"),
-      },
-    );
-    return user;
+  async getAllChurchElder(@Request() req) {
+    return this.userService.getAllUsers();
   }
 
   @ApiBearerAuth()
@@ -158,14 +130,6 @@ export class UserController {
   @Get(":id")
   getSingleUserById(@Param("id") id: number): Promise<User> {
     return this.userService.getSingleUser(id);
-  }
-
-  @ApiBearerAuth()
-  @HasRoles("admin")
-  @UseGuards(JwtAuthGuard)
-  @Get("all/:role")
-  getAllUserByAccessLevel(@Param("role") role: string) {
-    return this.userService.getAllUsersByAccessLevel(role);
   }
 
   @ApiBearerAuth()

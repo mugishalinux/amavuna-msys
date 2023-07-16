@@ -76,7 +76,7 @@ function App() {
               }
             />
             <Route
-              path="victims"
+              path="christian"
               element={
                 <RequireAuth loginPath="/">
                   <Victim />
@@ -84,7 +84,7 @@ function App() {
               }
             />
 
-            <Route path="categories">
+            <Route path="church">
               <Route
                 index
                 element={

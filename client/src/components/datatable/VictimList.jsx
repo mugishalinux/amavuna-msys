@@ -4,7 +4,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   userColumns,
-  victimColumns,
+  christianColumns,
   categoryColumns,
   userRows,
 } from "../../datatablesource";
@@ -133,6 +133,7 @@ const VictimList = () => {
   const [locationImages, setLocationImages] = useState([]);
   const [tempName, setTempName] = useState("");
   const [tempId, setTempId] = useState([]);
+  const [uniqueiD, setUniqueiD] = useState();
   const [categoryName, setCategoryName] = useState("");
   const [categoryModalOpen, setCategoryModalOpen] = useState(false);
   const [updateVictimModalOpen, setUpdateVictimModalOpen] = useState(false);
@@ -177,8 +178,6 @@ const VictimList = () => {
       setPhoneNumber(event.target.value);
     } else if (event.target.name === "user") {
       setUser(event.target.value);
-    } else if (event.target.name === "category") {
-      setCatId(event.target.value);
     }
   };
 
@@ -215,8 +214,8 @@ const VictimList = () => {
 
     const age = calculateAge(dob);
 
-    if (age > 21) {
-      toast.error("Age must be less than or equal to 21.", {
+    if (age < 12) {
+      toast.error("Age must be greater than or equal to 21.", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -234,11 +233,9 @@ const VictimList = () => {
       phoneNumber,
       dob,
       user: auth().id,
-      category: catId,
     };
-
     axios
-      .put(`${BASE_URL}/victim/${tempId}`, data, {
+      .put(`${BASE_URL}/christian/${uniqueiD}`, data, {
         headers: {
           Authorization: `Bearer ${auth().jwtToken}`,
         },
@@ -259,7 +256,7 @@ const VictimList = () => {
         });
 
         axios
-          .get(`${BASE_URL}/victim`, {
+          .get(`${BASE_URL}/christian `, {
             headers: {
               Authorization: `Bearer ${auth().jwtToken}`,
             },
@@ -287,7 +284,7 @@ const VictimList = () => {
         });
 
         axios
-          .get(`${BASE_URL}/victim`, {
+          .get(`${BASE_URL}/christian `, {
             headers: {
               Authorization: `Bearer ${auth().jwtToken}`,
             },
@@ -317,8 +314,8 @@ const VictimList = () => {
 
     const age = calculateAge(dob);
 
-    if (age > 21) {
-      toast.error("Age must be less than or equal to 21.", {
+    if (age < 12) {
+      toast.error("Age must be greater than or equal to 12.", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -337,11 +334,10 @@ const VictimList = () => {
       phoneNumber,
       dob,
       user: auth().id,
-      category: catId,
     };
 
     axios
-      .post(`${BASE_URL}/victim/creation`, data, {
+      .post(`${BASE_URL}/christian/creation`, data, {
         headers: {
           Authorization: `Bearer ${auth().jwtToken}`,
         },
@@ -361,7 +357,7 @@ const VictimList = () => {
           theme: "light",
         });
         axios
-          .get(`${BASE_URL}/victim`, {
+          .get(`${BASE_URL}/christian `, {
             headers: {
               Authorization: `Bearer ${auth().jwtToken}`,
             },
@@ -386,7 +382,7 @@ const VictimList = () => {
           theme: "light",
         });
         axios
-          .get(`${BASE_URL}/victim`, {
+          .get(`${BASE_URL}/christian `, {
             headers: {
               Authorization: `Bearer ${auth().jwtToken}`,
             },
@@ -461,7 +457,7 @@ const VictimList = () => {
 
     try {
       // Submit location data to API endpoint only if images were uploaded
-      await axios.put(`${BASE_URL}/location/${tempId}`, locationData, {
+      await axios.put(`${BASE_URL}/christian/${tempId}`, locationData, {
         headers: {
           Authorization: `Bearer ${auth().jwtToken}`,
         },
@@ -481,7 +477,7 @@ const VictimList = () => {
 
       // Fetch categories again to refresh the list
       axios
-        .get(`${BASE_URL}/victim`, {
+        .get(`${BASE_URL}/christian `, {
           headers: {
             Authorization: `Bearer ${auth().jwtToken}`,
           },
@@ -560,7 +556,7 @@ const VictimList = () => {
 
         // Fetch categories again to refresh the list
         axios
-          .get(`${BASE_URL}/victim`, {
+          .get(`${BASE_URL}/christian `, {
             headers: {
               Authorization: `Bearer ${auth().jwtToken}`,
             },
@@ -609,7 +605,7 @@ const VictimList = () => {
 
     axios
       .put(
-        `${BASE_URL}/category/${tempId}`,
+        `${BASE_URL}/christian/${uniqueiD}`,
         { categoryName: categoryName.trim() },
         {
           headers: {
@@ -618,7 +614,7 @@ const VictimList = () => {
         }
       )
       .then((response) => {
-        toast.success("Category updated successfully", {
+        toast.success("christian information updated successfully", {
           position: "top-right",
           autoClose: 2000,
           hideProgressBar: false,
@@ -631,7 +627,7 @@ const VictimList = () => {
 
         // Fetch categories again to refresh the list
         axios
-          .get(`${BASE_URL}/victim`, {
+          .get(`${BASE_URL}/christian `, {
             headers: {
               Authorization: `Bearer ${auth().jwtToken}`,
             },
@@ -692,7 +688,7 @@ const VictimList = () => {
 
   useEffect(() => {
     axios
-      .get(`${BASE_URL}/victim`, {
+      .get(`${BASE_URL}/christian `, {
         headers: {
           Authorization: `Bearer ${auth().jwtToken}`,
         },
@@ -794,14 +790,13 @@ const VictimList = () => {
             <div
               className="updateButton"
               onClick={() => {
+                setUniqueiD(params.row.id);
                 setUpdateModalOpen(true);
-
                 setFirstName(params.row.firstName);
                 setLastName(params.row.lastName);
                 setPhoneNumber(params.row.primaryPhone);
                 setDob(params.row.dob);
                 setCatId(params.row.category.id);
-                setTempId(params.row.id);
               }}
             >
               Update
@@ -810,7 +805,7 @@ const VictimList = () => {
             <div
               className="deleteButton"
               onClick={() => {
-                let url = `${BASE_URL}/victim/${params.row.id}`;
+                let url = `${BASE_URL}/christian/${params.row.id}`;
                 fetch(url, {
                   method: "DELETE",
                   headers: {
@@ -823,7 +818,7 @@ const VictimList = () => {
                 })
                   .then((response) => {
                     response.json();
-                    toast.success("Category was successfully deleted", {
+                    toast.success("christian was successfully deleted", {
                       position: "top-right",
                       autoClose: 2000,
                       hideProgressBar: false,
@@ -834,7 +829,7 @@ const VictimList = () => {
                       theme: "light",
                     });
                     axios
-                      .get(`${BASE_URL}/victim`, {
+                      .get(`${BASE_URL}/christian `, {
                         headers: {
                           Authorization: `Bearer ${auth().jwtToken}`,
                         },
@@ -880,7 +875,7 @@ const VictimList = () => {
         <ToastContainer />
         <div style={{ marginBottom: "30px" }} className="upper-section-trip">
           <div className="title">
-            <h3>All Victims</h3>
+            <h3>All Christians</h3>
           </div>
 
           <div className={classes.searchBox}>
@@ -889,7 +884,7 @@ const VictimList = () => {
                 type="text"
                 onChange={(e) => setSearch(e.target.value)}
                 name="search"
-                placeholder="Searching category"
+                placeholder="Searching christain"
                 variant="outlined"
                 InputProps={{
                   startAdornment: (
@@ -940,12 +935,14 @@ const VictimList = () => {
                     firstName.toLowerCase().includes(search.toLowerCase()) ||
                     lastName.toLowerCase().includes(search.toLowerCase()) ||
                     dob.toLowerCase().includes(search.toLowerCase()) ||
-                    primaryPhone.toLowerCase().includes(search.toLowerCase()) ||
-                    categoryName.toLowerCase().includes(search.toLowerCase())
+                    primaryPhone.toLowerCase().includes(search.toLowerCase())
+                    //   ||
+                    //   categoryName.toLowerCase().includes(search.toLowerCase()
+                    //   )
                   );
                 })
           }
-          columns={victimColumns.concat(actionColumns)}
+          columns={christianColumns.concat(actionColumns)}
           pageSize={9}
           rowsPerPageOptions={[9]}
           checkboxSelection
@@ -954,7 +951,7 @@ const VictimList = () => {
 
       <div>
         <Dialog open={categoryModalOpen} onClose={handleCategoryModalClose}>
-          <DialogTitle>Create Victim</DialogTitle>
+          <DialogTitle>Create Christian</DialogTitle>
           <DialogContent>
             <form onSubmit={handleFormSubmit}>
               <TextField
@@ -1003,34 +1000,6 @@ const VictimList = () => {
                 style={{ marginTop: "10px" }}
               />
 
-              <TextField
-                select
-                id="category"
-                name="category"
-                variant="outlined"
-                value={catId}
-                onChange={handleInputChange}
-                fullWidth
-                required
-                style={{ width: "100%", marginTop: "10px" }}
-              >
-                <MenuItem value={0} disabled>
-                  Select category
-                </MenuItem>
-                {category.map((category) => (
-                  <MenuItem
-                    style={{
-                      border: "solid white 0px",
-                      backgroundColor: "white",
-                    }}
-                    key={category.id}
-                    value={category.id}
-                  >
-                    {category.cateogryName}
-                  </MenuItem>
-                ))}
-              </TextField>
-
               <Button
                 type="submit"
                 variant="contained"
@@ -1067,6 +1036,15 @@ const VictimList = () => {
                 value={firstName}
                 onChange={handleInputChange}
                 fullWidth
+              />{" "}
+              <TextField
+                id="uniqueiD"
+                name="uniqueiD"
+                hidden
+                variant="outlined"
+                value={uniqueiD}
+                onChange={handleInputChange}
+                fullWidth
               />
               <TextField
                 id="lastName"
@@ -1100,34 +1078,6 @@ const VictimList = () => {
                 fullWidth
                 style={{ marginTop: "10px" }}
               />
-
-              <TextField
-                select
-                id="category"
-                name="category"
-                variant="outlined"
-                value={catId}
-                onChange={handleInputChange}
-                fullWidth
-                style={{ width: "100%", marginTop: "10px" }}
-              >
-                <MenuItem value={0} disabled>
-                  Select category
-                </MenuItem>
-                {category.map((category) => (
-                  <MenuItem
-                    style={{
-                      border: "solid white 0px",
-                      backgroundColor: "white",
-                    }}
-                    key={category.id}
-                    value={category.id}
-                  >
-                    {category.cateogryName}
-                  </MenuItem>
-                ))}
-              </TextField>
-
               <Button
                 type="submit"
                 variant="contained"

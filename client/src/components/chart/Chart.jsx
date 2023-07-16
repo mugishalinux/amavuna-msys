@@ -17,7 +17,7 @@ import {
 //   { name: "June", Total: 1700 },
 // ];
 
-const Chart = ({ aspect, title, data }) => {
+const Chart = ({ aspect, title,  data}) => {
   return (
     <div className="chart">
       <div className="title">{title}</div>
@@ -29,7 +29,7 @@ const Chart = ({ aspect, title, data }) => {
           margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
         >
           <defs>
-            <linearGradient id="total" x1="0" y1="0" x2="0" y2="1">
+            <linearGradient id="Total" x1="0" y1="0" x2="0" y2="1">
               <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
               <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
             </linearGradient>
@@ -39,10 +39,10 @@ const Chart = ({ aspect, title, data }) => {
           <Tooltip />
           <Area
             type="monotone"
-            dataKey="total"
+            dataKey="Total"
             stroke="#8884d8"
             fillOpacity={1}
-            fill="url(#total)"
+            fill="url(#Total)"
           />
         </AreaChart>
       </ResponsiveContainer>

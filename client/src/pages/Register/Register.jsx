@@ -56,14 +56,13 @@ const Register = () => {
     password: "",
     access_level: "mentor",
     profilePicture: null,
-    province: 0,
-    district: 0,
-    sector: 0,
+    church: 0,
   });
 
   const [provinces, setProvinces] = useState([]);
   const [districts, setDistricts] = useState([]);
   const [sectors, setSectors] = useState([]);
+  const [church, setChurch] = useState([]);
 
   useEffect(() => {
     const fetchProvinces = async () => {
@@ -76,6 +75,19 @@ const Register = () => {
     };
 
     fetchProvinces();
+  }, []);
+
+  useEffect(() => {
+    const fetchChurches = async () => {
+      try {
+        const response = await axios.get(`${BASE_URL}/church`);
+        setChurch(response.data);
+      } catch (error) {
+        console.error("Error fetching sectors:", error);
+      }
+    };
+
+    fetchChurches();
   }, []);
 
   const fetchDistricts = async (provinceId) => {
@@ -104,7 +116,7 @@ const Register = () => {
     const { name, value } = e.target;
     setReg({ ...reg, [name]: value });
 
-    if (name === "province") {
+    if (name === "church") {
       setReg({ ...reg, [name]: value, district: 0, sector: 0 });
       fetchDistricts(value);
     } else if (name === "district") {
@@ -121,10 +133,10 @@ const Register = () => {
   };
 
   const validatePhoneNumber = (value) => {
-    const phoneNumberRegex = /(2507[8,2,3,9])[0-9]{7}/;
+    const phoneNumberRegex = /(07[8,2,3,9])[0-9]{7}/;
     return phoneNumberRegex.test(value)
       ? undefined
-      : "Phone number should match the pattern (2507[8,2,3,9])[0-9]{7}";
+      : "Phone number should match the pattern (07[8,2,3,9])[0-9]{7}";
   };
 
   // Get the current date in the format YYYY-MM-DD
@@ -191,7 +203,7 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (reg.profilePicture && reg.province && reg.district && reg.sector) {
+    if (reg.profilePicture && reg.church) {
       setIsLoading(true);
 
       try {
@@ -203,11 +215,12 @@ const Register = () => {
           phoneNumber: reg.phoneNumber,
           dob: reg.dob,
           password: reg.password,
-          access_level: "mentor",
+          access_level: "churchelder",
           profilePicture: profilePictureUrl,
-          province: reg.province,
-          district: reg.district,
-          sector: reg.sector,
+          church: reg.church,
+          provinces: 1,
+          districts: 2,
+          sectors: 3,
         };
 
         const response = await axios.post(
@@ -293,9 +306,6 @@ const Register = () => {
             <Step>
               <StepLabel>Step 2</StepLabel>
             </Step>
-            <Step>
-              <StepLabel>Step 3</StepLabel>
-            </Step>
           </Stepper>
           <form className="form-group" onSubmit={handleSubmit}>
             {activeStep === 0 && (
@@ -372,114 +382,48 @@ const Register = () => {
                 </div>
               </div>
             )}
+
             {activeStep === 1 && (
               <div>
-                <div className="form-inpu">
-                  <label>Provide profile picture</label>
-                  <input
-                    type="file"
-                    accept=".jpg, .png"
-                    onChange={(e) =>
-                      handleInputs({
-                        target: {
-                          name: "profilePicture",
-                          value: e.target.files[0],
-                        },
-                      })
-                    }
-                    required
-                  />
+                <div>
+                  <div className="form-inpu">
+                    <label>Provide profile picture</label>
+                    <input
+                      type="file"
+                      accept=".jpg, .png"
+                      onChange={(e) =>
+                        handleInputs({
+                          target: {
+                            name: "profilePicture",
+                            value: e.target.files[0],
+                          },
+                        })
+                      }
+                      required
+                    />
+                  </div>
                 </div>
-
-                <div style={{ paddingBottom: "30px" }} className="form-input">
-                  <Button
-                    style={{ marginTop: "10px", marginBottom: "20px" }}
-                    variant="contained"
-                    color="primary"
-                    onClick={handleBack}
-                  >
-                    Back
-                  </Button>
-                  <Button
-                    style={{
-                      marginTop: "10px",
-                      marginBottom: "20px",
-                    }}
-                    variant="contained"
-                    color="primary"
-                    onClick={handleNext}
-                  >
-                    Next
-                  </Button>
-                </div>
-              </div>
-            )}
-            {activeStep === 2 && (
-              <div>
                 <div className="form-input">
                   <TextField
                     select
-                    name="province"
-                    value={reg.province}
+                    name="church"
+                    value={reg.church}
                     onChange={handleInputs}
                     variant="outlined"
                     required
                     style={{ width: "100%" }}
                   >
                     <MenuItem value={0} disabled>
-                      Select your province
+                      Select your church
                     </MenuItem>
-                    {provinces.map((province) => (
-                      <MenuItem key={province.id} value={province.id}>
-                        {province.name}
+                    {church.map((church) => (
+                      <MenuItem key={church.id} value={church.id}>
+                        {church.churchName}
                       </MenuItem>
                     ))}
                   </TextField>
                 </div>
-                {reg.province !== 0 && (
-                  <div className="form-input">
-                    <TextField
-                      select
-                      name="district"
-                      value={reg.district}
-                      onChange={handleInputs}
-                      variant="outlined"
-                      required
-                      style={{ width: "100%" }}
-                    >
-                      <MenuItem value={0} disabled>
-                        Select your district
-                      </MenuItem>
-                      {districts.map((district) => (
-                        <MenuItem key={district.id} value={district.id}>
-                          {district.name}
-                        </MenuItem>
-                      ))}
-                    </TextField>
-                  </div>
-                )}
-                {reg.district !== 0 && (
-                  <div className="form-input">
-                    <TextField
-                      select
-                      name="sector"
-                      value={reg.sector}
-                      onChange={handleInputs}
-                      variant="outlined"
-                      required
-                      style={{ width: "100%" }}
-                    >
-                      <MenuItem value={0} disabled>
-                        Select your sector
-                      </MenuItem>
-                      {sectors.map((sector) => (
-                        <MenuItem key={sector.id} value={sector.id}>
-                          {sector.name}
-                        </MenuItem>
-                      ))}
-                    </TextField>
-                  </div>
-                )}
+
                 <div style={{ paddingBottom: "30px" }} className="form-input">
                   <Button
                     style={{ marginTop: "10px", marginBottom: "20px" }}

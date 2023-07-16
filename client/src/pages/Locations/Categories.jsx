@@ -5,7 +5,7 @@ import { useAuthUser } from "react-auth-kit";
 import React, { useState, useEffect } from "react";
 import FullScreenLoader from "../../components/loader/FullScreenLoader";
 import AdminSidebar from "../../components/sidebar/AdminSidebar";
-import Datatable from "../../components/datatable/categoryList";
+import Datatable from "../../components/datatable/churchList";
 
 const Categories = () => {
   const auth = useAuthUser();

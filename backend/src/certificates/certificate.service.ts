@@ -8,11 +8,10 @@ import {
 import { Not } from "typeorm";
 import e from "express";
 import { ResponseService } from "../response/response.service";
-import { Victim } from "../victim/entity/victim.entity";
-import { VictimRegisterDto } from "../victim/register.victim";
 import { CertificateRegisterDto } from "./dto/create.certificate.dto";
 import { Certificate } from "./entity/certificate.entity";
 import { CertificateUpdateDto } from "./dto/update.certificate.dto";
+import { Christian } from "../christian/entity/christian.entity";
 
 export type Usa = any;
 @Injectable()
@@ -21,7 +20,7 @@ export class CertificateService {
 
   async createCertificate(data: number) {
     const certificate = new Certificate();
-    const victim = await Victim.findOne({ where: { id: data } });
+    const victim = await Christian.findOne({ where: { id: data } });
     certificate.victim = victim;
     certificate.isAllowed = false;
     certificate.status = 1;
@@ -44,7 +43,7 @@ export class CertificateService {
     if (!certificate)
       throw new BadRequestException(`This certificate ${id} not found`);
 
-    const victim = await Victim.findOne({ where: { id: data.victim } });
+    const victim = await Christian.findOne({ where: { id: data.victim } });
     if (!victim) throw new BadRequestException(`This victim ${id} not found`);
     certificate.victim = victim;
     certificate.isAllowed = data.isAllowed;

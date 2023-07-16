@@ -435,48 +435,28 @@ const UsersList = () => {
               />
             </form>
           </div>
-
-          <div style={{ marginLeft: "50px" }} className="btn-add">
-            <div>
-              <TextField
-                select
-                value={selectedRole}
-                onChange={handleRoleSelect}
-                variant="outlined"
-                className={classes.selectBox}
-                label="Filter By Role"
-              >
-                <MenuItem disabled value="">
-                  All
-                </MenuItem>
-                <MenuItem className={classes.menuItem} value="admin">
-                  Admin
-                </MenuItem>
-                <MenuItem className={classes.menuItem} value="skipper">
-                  Skippers
-                </MenuItem>
-                <MenuItem className={classes.menuItem} value="user">
-                  Users
-                </MenuItem>
-              </TextField>
-            </div>
-          </div>
         </div>
         <DataGrid
           className="datagrid"
           rows={
             search === ""
               ? user
-              : user.filter(
-                  (item) =>
-                    item.firstName
-                      .toLowerCase()
-                      .includes(search.toLowerCase()) ||
-                    item.lastName
-                      .toLowerCase()
-                      .includes(search.toLowerCase()) ||
-                    item.primaryPhone.includes(search)
-                )
+              : user.filter((item) => {
+                  const firstName = item.firstName || "";
+                  const lastName = item.lastName || "";
+                  const dob = item.dob || "";
+                  const primaryPhone = item.primaryPhone || "";
+                  const churchElder = item.access_level || "";
+                  return (
+                    firstName.toLowerCase().includes(search.toLowerCase()) ||
+                    lastName.toLowerCase().includes(search.toLowerCase()) ||
+                    dob.toLowerCase().includes(search.toLowerCase()) ||
+                    churchElder.toLowerCase().includes(search.toLowerCase())
+                    //   ||
+                    //   categoryName.toLowerCase().includes(search.toLowerCase()
+                    //   )
+                  );
+                })
           }
           columns={skippersColumn.concat(actionColumns)}
           pageSize={9}

@@ -19,13 +19,17 @@ import { ResponseModule } from "./response/response.module";
 import { ReportModule } from "./reports/report.module";
 import { CategoryModule } from "./category/category.module";
 import { Category } from "./category/entity/category.entity";
-import { VictimModule } from "./victim/victim.module";
-import { Victim } from "./victim/entity/victim.entity";
+import { VictimModule } from "./christian/christian.module";
 import { Certificate } from "./certificates/entity/certificate.entity";
 import { CertificateModule } from "./certificates/certificate.module";
-import { Province } from "./user/user/entity/province.entity";
-import { District } from "./user/user/entity/district.entity";
-import { Sector } from "./user/user/entity/sector.entity";
+import { Church } from "./church/church.entity";
+import { ChurchModule } from "./church/church.module";
+import { ChurchController } from "./church/church.controller";
+import { ChurchService } from "./church/church.service";
+import { Christian } from "./christian/entity/christian.entity";
+import { Post } from "./post/post.entity";
+import { PostModule } from "./post/post.module";
+import { ChristianReportModule } from "./report/report.module copy";
 
 @Module({
   imports: [
@@ -41,7 +45,7 @@ import { Sector } from "./user/user/entity/sector.entity";
       username: process.env.DATABASE_USER,
       password: process.env.DATABASE_PASSWORD,
       database: process.env.DATABASE_DB,
-      entities: [User, Category, Victim, Certificate, Province, District, Sector],
+      entities: [User, Category, Christian, Post, Certificate, Church],
       logging: false,
       synchronize: true,
       // logging:true
@@ -55,10 +59,12 @@ import { Sector } from "./user/user/entity/sector.entity";
     ReportModule,
     VictimModule,
     CertificateModule,
-  
+    PostModule,
+    ReportModule,
+    ChristianReportModule,
     // LocationModule,
   ],
-  controllers: [AppController],
-  providers: [AppService, AuthService, JwtService, FilterHelper],
+  controllers: [AppController, ChurchController],
+  providers: [AppService, AuthService, JwtService, ChurchService, FilterHelper],
 })
 export class AppModule {}
