@@ -14,6 +14,10 @@ import { ResponseService } from "../response/response.service";
 import { PostDto } from "./post.dto";
 import { Post } from "./post.entity";
 import { User } from "../user/user/entity/user.entity";
+import * as dotenv from "dotenv";
+import { Christian } from "../christian/entity/christian.entity";
+dotenv.config();
+require("dotenv").config();
 
 export type Usa = any;
 @Injectable()
@@ -26,6 +30,11 @@ export class PostService {
     });
     if (!user)
       throw new BadRequestException(`This user  ${data.user} not found `);
+
+    const christians = await Christian.find({
+      where: { status: Not(8), user: { id: user.id } },
+    });
+
     const post = new Post();
     post.user = user;
     post.postTitle = data.postTitle;
@@ -33,8 +42,34 @@ export class PostService {
     post.status = 1;
     post.created_by = 1;
     post.updated_by = 1;
+
     try {
       const data = await post.save();
+      for (let i = 0; i < christians.length; i++) {
+        if (christians[i].primaryPhone != null) {
+          const number = "+25" + christians[i].primaryPhone;
+          const message =
+            "\n" +
+            "\n" +
+            "\n" +
+            data.postTitle +
+            "\n" +
+            "\n" +
+            data.postContent;
+          const twilio = require("twilio")(
+            process.env.SID,
+            process.env.AUTHTOKEN,
+          );
+          await twilio.messages
+            .create({
+              from: process.env.TWILIONUMBER,
+              to: number,
+              body: message,
+            })
+            .then(() => console.log("message has sent"))
+            .catch((e) => console.log(e));
+        }
+      }
       return this.response.postResponse(data.id);
     } catch (error) {
       throw new InternalServerErrorException("something wrong : ", error);
@@ -72,5 +107,16 @@ export class PostService {
     } catch (error) {
       throw new InternalServerErrorException("something wrong : ", error);
     }
+  }
+  async sendSms() {
+    const twilio = require("twilio")(process.env.SID, process.env.AUTHTOKEN);
+    await twilio.messages
+      .create({
+        from: process.env.TWILIONUMBER,
+        to: "+250783381277",
+        body: "hello brother",
+      })
+      .then(() => console.log("message has sent"))
+      .catch((e) => console.log(e));
   }
 }

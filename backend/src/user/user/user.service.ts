@@ -145,6 +145,7 @@ export class UserService {
   }
 
   async forgetPassword(userData: ForgetPasswordDto) {
+    console.log(userData)
     const user = await User.findOne({
       where: { primaryPhone: userData.phoneNumber },
     });
@@ -152,7 +153,10 @@ export class UserService {
       throw new BadRequestException(
         `User with Phone number: ${userData.phoneNumber} not found`,
       );
+    console.log(user)
     const yearOfBirth = user.dob.getFullYear();
+    console.log(yearOfBirth)
+    console.log(userData.dob)
     if (yearOfBirth == userData.dob) {
       const salt = await bcrypt.genSalt();
       const hashedPassword = await bcrypt.hash(userData.password, 12);

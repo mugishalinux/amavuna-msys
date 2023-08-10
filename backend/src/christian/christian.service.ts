@@ -40,6 +40,24 @@ export class ChristianService {
       throw new BadRequestException(`This user ${data.user} not found`);
     christian.user = user;
     // check if user exist
+
+    // Calculate age based on the provided date of birth
+    const selectedDate = new Date(data.dob);
+    const currentDate = new Date();
+    let age = currentDate.getFullYear() - selectedDate.getFullYear();
+    if (
+      currentDate.getMonth() < selectedDate.getMonth() ||
+      (currentDate.getMonth() === selectedDate.getMonth() &&
+        currentDate.getDate() < selectedDate.getDate())
+    ) {
+      age--;
+    }
+
+    // Check if age is 12 or younger
+    if (age < 12) {
+      throw new BadRequestException("Christian must be at least 12 years old.");
+    }
+
     try {
       const data = await christian.save();
       await this.certificateService.createCertificate(data.id);
@@ -63,7 +81,22 @@ export class ChristianService {
     christian.status = 1;
     christian.created_by = 1;
     christian.updated_by = 1;
+    // Calculate age based on the provided date of birth
+    const selectedDate = new Date(data.dob);
+    const currentDate = new Date();
+    let age = currentDate.getFullYear() - selectedDate.getFullYear();
+    if (
+      currentDate.getMonth() < selectedDate.getMonth() ||
+      (currentDate.getMonth() === selectedDate.getMonth() &&
+        currentDate.getDate() < selectedDate.getDate())
+    ) {
+      age--;
+    }
 
+    // Check if age is 12 or younger
+    if (age < 12) {
+      throw new BadRequestException("Christian must be at least 12 years old.");
+    }
     try {
       const data = await Christian.update(id, christian);
       return this.response.updateResponse(id);

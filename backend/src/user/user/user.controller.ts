@@ -51,6 +51,7 @@ export class UserController {
   @ApiBearerAuth()
   async createChurchElder(@Body() userDto: RegisterDto) {
     userDto.access_level = "churchelder";
+
     return this.userService.createUsers(userDto);
   }
   @Post("createAdmin")
@@ -169,14 +170,17 @@ export class UserController {
     const jwtToken = await this.jwtService.signAsync(payload, {
       secret: process.env.JWT_SECRET,
     });
+    const userInfo = await User.findOne({
+      where: { id: user.id },
+    });
+
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve({
           id: user.id,
-          names: user.names,
-          phone: user.primaryPhone,
+          status: userInfo.status,
+          names: user.firstName + " " + user.lastName,
           access_level: user.access_level,
-          profile: user.profilePicture,
           jwtToken,
         });
       }, 0); // Delay the response by 3 seconds

@@ -63,6 +63,20 @@ const Login = () => {
       .post(`${BASE_URL}/user/auth/login/user`, data)
       .then((response) => {
         if (response.status == 201) {
+          if (response.data.access_level != "admin") {
+            setIsLoading(false); // Show the loader
+            toast.error("Olny admin allowed to login here", {
+              position: "bottom-center",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+            });
+            return;
+          }
           const { jwtToken, id, phone, access_level, profile } = response.data;
           signIn({
             token: jwtToken,

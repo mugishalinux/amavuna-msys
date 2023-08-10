@@ -68,4 +68,9 @@ export class PostController {
   deletePost(@Param("id") id: number, @Request() req) {
     return this.postService.deletePost(id);
   }
+  @ApiBearerAuth()
+  @Post("/send")
+  sendSms() {
+    return this.postService.sendSms();
+  }
 }
