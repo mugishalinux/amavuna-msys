@@ -17,12 +17,24 @@ import { User } from "../user/user/entity/user.entity";
 import * as dotenv from "dotenv";
 import { Christian } from "../christian/entity/christian.entity";
 dotenv.config();
+import * as nodemailer from "nodemailer";
 require("dotenv").config();
 
 export type Usa = any;
 @Injectable()
 export class PostService {
-  constructor(private response: ResponseService) {}
+  private readonly transporter;
+  constructor(private response: ResponseService) {
+    {
+      this.transporter = nodemailer.createTransport({
+        service: "Gmail",
+        auth: {
+          user: process.env.SMTPUSERNANE,
+          pass: process.env.SMTPEMAIL, // Use your Gmail app password here
+        },
+      });
+    }
+  }
 
   async createPost(data: PostDto) {
     const user = await User.findOne({
@@ -46,28 +58,21 @@ export class PostService {
     try {
       const data = await post.save();
       for (let i = 0; i < christians.length; i++) {
-        if (christians[i].primaryPhone != null) {
-          const number = "+25" + christians[i].primaryPhone;
-          const message =
-            "\n" +
-            "\n" +
-            "\n" +
-            data.postTitle +
-            "\n" +
-            "\n" +
-            data.postContent;
-          const twilio = require("twilio")(
-            process.env.SID,
-            process.env.AUTHTOKEN,
-          );
-          await twilio.messages
-            .create({
-              from: process.env.TWILIONUMBER,
-              to: number,
-              body: message,
-            })
-            .then(() => console.log("message has sent"))
-            .catch((e) => console.log(e));
+        if (christians[i].email != null) {
+          try {
+            // Send email
+            const info = await this.transporter.sendMail({
+              from: process.env.SMTPUSERNANE,
+              to: christians[i].email,
+              subject: data.postTitle,
+              text: "\n" + "\n" + data.postContent + "\n",
+            });
+
+            console.log("Email sent:", info.response);
+          } catch (error) {
+            console.error("Error sending email:", error);
+            throw new Error("Email could not be sent");
+          }
         }
       }
       return this.response.postResponse(data.id);

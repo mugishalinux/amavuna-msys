@@ -76,40 +76,14 @@ export class ChristianController {
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @Put(":id")
+  @Put(":id/:isDateChange")
   updateVictim(
     @Param("id") id: number,
+    @Param("isDateChange") isDateChange: string,
     @Body() data: ChristianRegisterDto,
     @Request() req,
   ) {
-    // const months = {
-    //   January: "01",
-    //   February: "02",
-    //   March: "03",
-    //   April: "04",
-    //   May: "05",
-    //   June: "06",
-    //   July: "07",
-    //   August: "08",
-    //   September: "09",
-    //   October: "10",
-    //   November: "11",
-    //   December: "12",
-    // };
-
-    // const years = data.dob.getFullYear();
-    // const mon = String(data.dob.getMonth() + 1).padStart(2, "0");
-    // const days = String(data.dob.getDate()).padStart(2, "0");
-    // const dateFormat = `${years}-${mon}-${days}`;
-
-    // const dateParts = dateFormat.split(" ");
-    // const day = dateParts[0];
-    // const month = months[dateParts[1]];
-    // const year = dateParts[2];
-
-    // console.log(`${year}-${month}-${day}`);
-
-    return this.christianService.updateChristian(id, data);
+    return this.christianService.updateChristian(id, data, isDateChange);
   }
 
   @ApiBearerAuth()

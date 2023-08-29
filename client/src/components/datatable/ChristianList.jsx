@@ -22,6 +22,7 @@ import ListItem from "@mui/material/ListItem";
 import ListItemAvatar from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItem";
 import { BASE_URL } from "../../config/baseUrl";
+import { useNavigate } from "react-router-dom";
 import {
   Box,
   Container,
@@ -47,8 +48,6 @@ import {
 import { useAuthUser } from "react-auth-kit";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
-import jsPDF from "jspdf";
-import "jspdf-autotable"; // Import the autoTable plugin
 
 const useStyles = makeStyles((theme) => ({
   header: {
@@ -111,6 +110,7 @@ const useStyles = makeStyles((theme) => ({
 
 const VictimList = () => {
   const auth = useAuthUser();
+  const navigate = useNavigate();
   const classes = useStyles();
   const [user, setUser] = useState([]);
   const [tempUsers, setTempUsers] = useState([]);
@@ -168,54 +168,6 @@ const VictimList = () => {
   //       setCategoryName(event.target.value);
   //     }
   //   };
-
-  const handleExportToPDF = () => {
-    const doc = new jsPDF();
-
-    const columns = christianColumns.map((column) => column.headerName);
-
-    // Prepare the rows for the PDF table
-    const rows = user.map((item) => {
-      const rowData = [];
-      columns.forEach((column) => {
-        let value = "";
-        if (column === "ID") {
-          value = item.id || ""; // Access the nested property directly institution
-        } else if (column === "Last Name") {
-          value = item.lastName || ""; // Access the nested property directly
-        } else if (column === "First Name") {
-          value = item.firstName || ""; // Access the nested property directly
-        } else if (column === "Birth Date") {
-          const date = new Date(item.dob); // Convert the string to a Date object
-          const options = { year: "numeric", month: "long", day: "numeric" };
-          value = date.toLocaleDateString("en-US", options); // Format the date as "Month Day, Year"
-        } else if (column === "email") {
-          value = item.email || ""; // Access the nested property directly
-        } else {
-          const field = christianColumns.find(
-            (col) => col.headerName === column
-          )?.field;
-          if (field) {
-            value = item[field] || "";
-          }
-        }
-        rowData.push(value);
-      });
-      return rowData;
-    });
-
-    // Add a title
-    doc.text("List Of All Christian", 105, 10, { align: "center" });
-
-    // Add the table using autoTable
-    doc.autoTable({
-      head: [columns],
-      body: rows,
-    });
-
-    // Save the PDF
-    doc.save("christian_list.pdf");
-  };
 
   const handleInputChange = (event) => {
     if (event.target.name === "firstName") {
@@ -738,7 +690,7 @@ const VictimList = () => {
 
   useEffect(() => {
     axios
-      .get(`${BASE_URL}/christian `, {
+      .get(`${BASE_URL}/christian/ `, {
         headers: {
           Authorization: `Bearer ${auth().jwtToken}`,
         },
@@ -838,18 +790,17 @@ const VictimList = () => {
         return (
           <div className="cellAction">
             <div
+              style={{ backgroundColor: "blue", color: "white" }}
               className="updateButton"
               onClick={() => {
-                setUniqueiD(params.row.id);
-                setUpdateModalOpen(true);
-                setFirstName(params.row.firstName);
-                setLastName(params.row.lastName);
-                setEmail(params.row.email);
-                setDob(params.row.dob);
-                setCatId(params.row.category.id);
+                const data = {
+                  names: params.row.firstName + " " + params.row.lastName,
+                  // catName: params.row.category.cateogryName,
+                };
+                navigate("/certificate", { state: data });
               }}
             >
-              Update
+              Generate Certificate
             </div>
 
             <div
@@ -925,7 +876,7 @@ const VictimList = () => {
         <ToastContainer />
         <div style={{ marginBottom: "30px" }} className="upper-section-trip">
           <div className="title">
-            <h3>All Christians</h3>
+            <h3>All Christians top</h3>
           </div>
 
           <div className={classes.searchBox}>
@@ -947,30 +898,13 @@ const VictimList = () => {
             </form>
           </div>
 
-          <div>
-            <button
-              onClick={handleExportToPDF}
-              style={{
-                padding: "13px",
-                width: "150px",
-                borderRadius: "7px",
-                marginLeft: "30px",
-                backgroundColor: "#09143c",
-                color: "white",
-                border: "solid 1px #09143c",
-              }}
-            >
-              Download Report
-            </button>
-          </div>
-
           <div
             style={{
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
               alignContent: "center",
-              marginLeft: "40px",
+              marginLeft: "160px",
             }}
             className="btn-add"
           >

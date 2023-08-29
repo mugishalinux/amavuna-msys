@@ -26,9 +26,11 @@ import BookingList from "./pages/booking/BookingList";
 import { RequireAuth } from "react-auth-kit";
 import Skipper from "./pages/skippers/Skipper";
 import Victim from "./pages/victim/Victim";
+import Christians from "./pages/victim/Christian";
 import Categories from "./pages/Locations/Categories";
 import Boat from "./pages/Boat/Boat";
 import NewBoat from "./pages/new_boat/New";
+import Certificate from "./pages/certificate/certificate";
 import Payment from "./pages/payments/Payment";
 function App() {
   const { darkMode } = useContext(DarkModeContext);
@@ -66,6 +68,7 @@ function App() {
             <Route index element={<Login />} />
             <Route path="register" element={<Register />} />
             <Route path="appointment" element={<AppointmentList />} />
+            <Route path="certificate" element={<Certificate />} />
             <Route path="appoint" element={<Appoint />} />
             <Route
               path="user"
@@ -83,7 +86,14 @@ function App() {
                 </RequireAuth>
               }
             />
-
+            <Route
+              path="christians"
+              element={
+                <RequireAuth loginPath="/">
+                  <Christians />
+                </RequireAuth>
+              }
+            />
             <Route path="church">
               <Route
                 index

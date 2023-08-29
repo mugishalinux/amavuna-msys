@@ -25,7 +25,7 @@ export class Christian extends BaseEntity {
   @Column({ nullable: true })
   dob: Date;
   @Column()
-  primaryPhone: string;
+  email: string;
   @Column({ default: false })
   isBaptised: boolean;
   @Column()

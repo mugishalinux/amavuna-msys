@@ -5,16 +5,12 @@ import { useAuthUser } from "react-auth-kit";
 import React, { useState, useEffect } from "react";
 import FullScreenLoader from "../../components/loader/FullScreenLoader";
 import AdminSidebar from "../../components/sidebar/AdminSidebar";
-import Datatable from "../../components/datatable/VictimList";
-import jsPDF from "jspdf";
-import "jspdf-autotable"; // Import the autoTable plugin
+import Datatable from "../../components/datatable/ChristianList";
 
 const Victim = () => {
   const auth = useAuthUser();
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-
-  
   useEffect(() => {
     const fetchUserInformation = async () => {
       try {

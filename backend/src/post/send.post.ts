@@ -49,7 +49,7 @@ export class SendPostService {
       function messageCallback(error: any, responseBody: any) {
         if (error === null) {
           console.log(
-            `${post[i].postContent}: ${christian[i].primaryPhone}` +
+            `${post[i].postContent}: ${christian[i].email}` +
               ` => code: ${responseBody["status"]["code"]}` +
               `, description: ${responseBody["status"]["description"]}`,
           );
@@ -60,7 +60,7 @@ export class SendPostService {
 
       this.client.sms.message(
         messageCallback,
-        christian[i].primaryPhone,
+        christian[i].email,
         post[i].postContent,
         "ARN",
       );

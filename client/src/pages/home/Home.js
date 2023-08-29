@@ -4,6 +4,7 @@ import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
 import "./home.scss";
 import { useAuthUser } from "react-auth-kit";
+import { useNavigate } from "react-router-dom";
 
 import FullScreenLoader from "../../components/loader/FullScreenLoader";
 import AdminSidebar from "../../components/sidebar/AdminSidebar";
@@ -15,6 +16,7 @@ import SkipperSidebar from "../../components/sidebar/SkipperSidebar";
 import { BASE_URL } from "../../config/baseUrl";
 
 const Home = () => {
+  const navigate = useNavigate();
   const auth = useAuthUser();
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -36,6 +38,9 @@ const Home = () => {
 
         // Set the user object in component state
         setUser(userInformation);
+        if (userInformation.access_level != "admin") {
+          navigate("/christians");
+        }
 
         //fetch total users
         const totalUsers = await axios.get(`${BASE_URL}/user`, {

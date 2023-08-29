@@ -28,7 +28,7 @@ export class ChristianService {
     christian.firstName = data.firstName;
     christian.lastName = data.lastName;
     christian.dob = data.dob;
-    christian.primaryPhone = data.phoneNumber;
+    christian.email = data.email;
     christian.status = 1;
     christian.created_by = 1;
     christian.updated_by = 1;
@@ -68,7 +68,11 @@ export class ChristianService {
     }
   }
 
-  async updateChristian(id: number, data: ChristianRegisterDto) {
+  async updateChristian(
+    id: number,
+    data: ChristianRegisterDto,
+    isDateChange: string,
+  ) {
     const christian = await Christian.findOne({
       where: { id },
     });
@@ -76,12 +80,20 @@ export class ChristianService {
       throw new BadRequestException(`This christian ${id} not found`);
     christian.firstName = data.firstName;
     christian.lastName = data.lastName;
-    christian.dob = data.dob;
-    christian.primaryPhone = data.phoneNumber;
+
+    christian.email = data.email;
     christian.status = 1;
     christian.created_by = 1;
     christian.updated_by = 1;
+
     // Calculate age based on the provided date of birth
+
+    if (isDateChange === "yes") {
+  
+    } else if (isDateChange === "no") {
+      christian.dob = data.dob;
+    }
+
     const selectedDate = new Date(data.dob);
     const currentDate = new Date();
     let age = currentDate.getFullYear() - selectedDate.getFullYear();
@@ -179,7 +191,7 @@ export class ChristianService {
       christian.firstName = this.getRandomName();
       christian.lastName = this.getRandomName();
       christian.dob = this.getRandomDate("1970-01-01", "2003-12-31");
-      christian.primaryPhone = this.getRandomPhoneNumber();
+      christian.email = this.getRandomPhoneNumber();
       christian.status = 1;
       christian.created_by = 1;
       christian.updated_by = 1;
