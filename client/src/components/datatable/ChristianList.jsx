@@ -876,7 +876,7 @@ const VictimList = () => {
         <ToastContainer />
         <div style={{ marginBottom: "30px" }} className="upper-section-trip">
           <div className="title">
-            <h3>All Christians top</h3>
+            <h3>All Christians</h3>
           </div>
 
           <div className={classes.searchBox}>

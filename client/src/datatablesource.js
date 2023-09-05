@@ -615,3 +615,60 @@ export const paymentColumn = [
     },
   },
 ];
+
+
+
+export const christianAttendedColumn = [
+  {
+    field: "id",
+    headerName: "ID",
+    width: 40,
+    renderCell: (params) => {
+      return <div className="cellWithImg">{params.row.id}</div>;
+    },
+  },
+  {
+    field: "First Name",
+    headerName: "First Name",
+    width: 130,
+    renderCell: (params) => {
+      return <div className="cellWithImg">{params.row.christian.firstName}</div>;
+    },
+  },
+  {
+    field: "Last Name",
+    headerName: "Last Name",
+    width: 130,
+    renderCell: (params) => {
+      return <div className="cellWithImg">{params.row.christian.lastName}</div>;
+    },
+  },
+  {
+    field: "Email",
+    headerName: "Email",
+    width: 150,
+    renderCell: (params) => {
+      return <div className="cellWithImg">{params.row.christian.email}</div>;
+    },
+  },
+
+  {
+    field: "Attendance Date",
+    headerName: "Attendance Date",
+    width: 200,
+    renderCell: (params) => {
+      const date = new Date(params.row.attendenceDate);
+      const formattedDate = `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
+
+      return <div className="cellWithImg">{params.row.formattedDate}</div>;
+    },
+  },
+  {
+    field: "Attendance Status",
+    headerName: "Attendance Status",
+    width: 200,
+    renderCell: (params) => {
+      return <div className="cellWithImg">{params.row.status}</div>;
+    },
+  },
+];

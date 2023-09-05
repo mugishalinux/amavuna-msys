@@ -32,6 +32,7 @@ export class ChristianService {
     christian.status = 1;
     christian.created_by = 1;
     christian.updated_by = 1;
+    christian.phoneNumber = data.phoneNumber;
     // check if user exist
     const user = await User.findOne({
       where: { id: data.user },
@@ -89,7 +90,6 @@ export class ChristianService {
     // Calculate age based on the provided date of birth
 
     if (isDateChange === "yes") {
-  
     } else if (isDateChange === "no") {
       christian.dob = data.dob;
     }

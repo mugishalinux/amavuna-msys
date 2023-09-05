@@ -13,6 +13,7 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 import { User } from "../../user/user/entity/user.entity";
+import { Attendence } from "../../attendence/attendence.entity";
 
 @Entity("christian")
 export class Christian extends BaseEntity {
@@ -26,6 +27,8 @@ export class Christian extends BaseEntity {
   dob: Date;
   @Column()
   email: string;
+  @Column()
+  phoneNumber: string;
   @Column({ default: false })
   isBaptised: boolean;
   @Column()
@@ -42,4 +45,6 @@ export class Christian extends BaseEntity {
   certificate: Certificate;
   @ManyToOne(() => User, (user) => user.christian)
   user: User;
+  @OneToMany(() => Attendence, (attendence) => attendence.christian)
+  attendence: Attendence;
 }

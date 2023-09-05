@@ -11,6 +11,7 @@ import CategoryIcon from "@mui/icons-material/Category";
 import GirlIcon from "@mui/icons-material/Girl";
 import ChurchIcon from "@mui/icons-material/Church";
 import { useAuthUser } from "react-auth-kit";
+import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 
 const AdminSidebar = () => {
   const auth = useAuthUser();
@@ -59,6 +60,14 @@ const AdminSidebar = () => {
               <li>
                 <ChurchIcon className="icon" />
                 <span>Churches</span>
+              </li>
+            </Link>
+          )}
+           {isAdmin && (
+            <Link to="/reports" style={{ textDecoration: "none" }}>
+              <li>
+                <LibraryBooksIcon className="icon" />
+                <span>report</span>
               </li>
             </Link>
           )}

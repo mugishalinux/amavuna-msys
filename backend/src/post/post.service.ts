@@ -74,6 +74,29 @@ export class PostService {
             throw new Error("Email could not be sent");
           }
         }
+        if (christians[i].phoneNumber != null) {
+          const number = "+25" + christians[i].phoneNumber;
+          const message =
+            "\n" +
+            "\n" +
+            "\n" +
+            data.postTitle +
+            "\n" +
+            "\n" +
+            data.postContent;
+          const twilio = require("twilio")(
+            process.env.SID,
+            process.env.AUTHTOKEN,
+          );
+          await twilio.messages
+            .create({
+              from: process.env.TWILIONUMBER,
+              to: number,
+              body: message,
+            })
+            .then(() => console.log("message has sent"))
+            .catch((e) => console.log(e));
+        }
       }
       return this.response.postResponse(data.id);
     } catch (error) {

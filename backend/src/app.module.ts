@@ -30,6 +30,8 @@ import { Christian } from "./christian/entity/christian.entity";
 import { Post } from "./post/post.entity";
 import { PostModule } from "./post/post.module";
 import { ChristianReportModule } from "./report/report.module copy";
+import { Attendence } from "./attendence/attendence.entity";
+import { AttendenceModule } from "./attendence/attendence.module";
 
 @Module({
   imports: [
@@ -45,7 +47,7 @@ import { ChristianReportModule } from "./report/report.module copy";
       username: process.env.DATABASE_USER,
       password: process.env.DATABASE_PASSWORD,
       database: process.env.DATABASE_DB,
-      entities: [User, Category, Christian, Post, Certificate, Church],
+      entities: [User, Category, Christian, Post, Certificate, Attendence, Church],
       logging: false,
       synchronize: true,
       // logging:true
@@ -58,6 +60,7 @@ import { ChristianReportModule } from "./report/report.module copy";
     ResponseModule,
     ReportModule,
     VictimModule,
+    AttendenceModule,
     CertificateModule,
     PostModule,
     ReportModule,
@@ -67,4 +70,4 @@ import { ChristianReportModule } from "./report/report.module copy";
   controllers: [AppController, ChurchController],
   providers: [AppService, AuthService, JwtService, ChurchService, FilterHelper],
 })
-export class AppModule {}
+export class AppModule { }

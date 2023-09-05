@@ -294,7 +294,7 @@ const Certificate = () => {
         <div
           style={{
             width: "100%",
-            height: "100vh",
+            height: "900px",
             backgroundImage: `url(${certImage})`, // Use the imported image
             backgroundSize: "cover",
             backgroundRepeat: "no-repeat",
@@ -365,8 +365,9 @@ const Certificate = () => {
                 backgroundColor: "black",
                 border: "solid black 1px",
                 color: "white",
-                marginLeft: "650px",
-                marginTop: "80px",
+                marginLeft: "500px",
+                marginTop: "200px",
+
                 padding: "10px",
                 fontSize: "30px",
               }}

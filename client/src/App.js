@@ -31,6 +31,8 @@ import Categories from "./pages/Locations/Categories";
 import Boat from "./pages/Boat/Boat";
 import NewBoat from "./pages/new_boat/New";
 import Certificate from "./pages/certificate/certificate";
+import Report from "./pages/report/report";
+
 import Payment from "./pages/payments/Payment";
 function App() {
   const { darkMode } = useContext(DarkModeContext);
@@ -78,11 +80,20 @@ function App() {
                 </RequireAuth>
               }
             />
+    
             <Route
               path="christian"
               element={
                 <RequireAuth loginPath="/">
                   <Victim />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="reports"
+              element={
+                <RequireAuth loginPath="/">
+                  <Report />
                 </RequireAuth>
               }
             />
