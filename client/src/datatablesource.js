@@ -374,11 +374,21 @@ export const christianColumns = [
   {
     field: "email",
     headerName: "email",
-    width: 150,
+    width: 230,
     renderCell: (params) => {
       const email = params.row.email;
 
       return <div className="cellWithImg">{email}</div>;
+    },
+  },
+  {
+    field: "Phone Number",
+    headerName: "Phone Number",
+    width: 150,
+    renderCell: (params) => {
+      const phone = params.row.phone;
+
+      return <div className="cellWithImg">{params.row.phoneNumber}</div>;
     },
   },
   // {
@@ -616,8 +626,6 @@ export const paymentColumn = [
   },
 ];
 
-
-
 export const christianAttendedColumn = [
   {
     field: "id",
@@ -632,7 +640,9 @@ export const christianAttendedColumn = [
     headerName: "First Name",
     width: 130,
     renderCell: (params) => {
-      return <div className="cellWithImg">{params.row.christian.firstName}</div>;
+      return (
+        <div className="cellWithImg">{params.row.christian.firstName}</div>
+      );
     },
   },
   {
